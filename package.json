@@ -31,7 +31,8 @@
     "element-plus": "^1.0.1-beta.24"
   },
   "dependencies": {
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "element-plus": "^1.0.1-beta.24"
   },
   "devDependencies": {
     "regenerator-runtime": "^0.13.7"
