@@ -1,0 +1,43 @@
+{
+  "name": "@repackel/repack-plus",
+  "version": "0.0.1",
+  "description": "A repackage of element-plus to help you build pages faster.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com/@repackel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/repackel/repack-plus.git"
+  },
+  "keywords": [
+    "element-plus",
+    "table",
+    "form-item",
+    "form-builder"
+  ],
+  "author": "Hz² <qumteq@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/repackel/repack-plus/issues"
+  },
+  "homepage": "https://github.com/repackel/repack-plus#readme",
+  "peerDependencies": {
+    "vue": "^3.0.5",
+    "element-plus": "^1.0.1-beta.24"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "regenerator-runtime": "^0.13.7"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
