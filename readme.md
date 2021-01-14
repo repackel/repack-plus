@@ -17,7 +17,7 @@
 
 ⚡⚡⚡
 
-**For Vue 3**
+**💪 Vue 3 Composition API**
 
 A powerful, flexible, and configurable TABLE and FORM **generator** with data-driven view.
 
