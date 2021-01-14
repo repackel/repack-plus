@@ -9,7 +9,7 @@
 
 🚧🚧🚧
 
-WIP
+<span style="font-size:3em">WIP (正在开发中)</span>
 
 🚧🚧🚧
 
@@ -43,5 +43,4 @@ npm i @repackel/repack-plus -D
 
 ## 📜 中文文档
 
-- [FormItem](./FormItem/readme.zh.md)
-- [Table](./Table/readme.zh.md)
+- [Table](./src/Table/readme.zh.md)
