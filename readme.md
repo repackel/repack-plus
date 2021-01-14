@@ -9,7 +9,7 @@
 
 🚧🚧🚧
 
-<span style="font-size:3em">WIP (正在开发中)</span>
+# WIP (正在开发中)
 
 🚧🚧🚧
 
