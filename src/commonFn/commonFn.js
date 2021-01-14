@@ -36,7 +36,11 @@ export const genAttr = (x, scope) => {
 };
 
 export const inputcfg = (x, i) => {
-  const { multiple, readonly, disabled } = x;
+  const {
+    multiple,
+    readonly,
+    disabled
+  } = x;
   let cfg = {
     size: x.size || "small",
     filterable: x.filterable || Boolean(x.dict) || true,
@@ -54,9 +58,9 @@ export const inputcfg = (x, i) => {
 
       break;
     case "number":
-      cfg.min = (x.range&&x.range[0])||1
-      cfg.max = (x.range&&x.range[1])||20
-      
+      cfg.min = (x.range && x.range[0]) || 1
+      cfg.max = (x.range && x.range[1]) || 20
+
       break;
     case "textarea":
       cfg.placeholder = x.placeholder || locz("pleaseFillin") + x.name;
@@ -96,6 +100,6 @@ export const inputcfg = (x, i) => {
 
 // Lodash
 const Lodash = {};
-const LodashList = ["get", "has", "last", "pick", "omit", "omitBy", "padStart"];
+const LodashList = ["get", "has", "last", "pick", "omit", "omitBy", "pick", "pickBy", "padStart"];
 LodashList.forEach((x) => (Lodash[x] = require("lodash/" + x + ".js")));
 export const _ = Lodash;

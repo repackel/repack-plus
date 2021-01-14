@@ -7,7 +7,6 @@
           <el-button :type="y.type||'primary'" :plain="y.plain" :icon="y.icon" size="small" @click="y.fn ? y.fn() : $emit(y.e)" v-for="(y,j) in x" :key="j">{{y.name}}</el-button>
         </div>
       </div>
-      <cpTitle v-if="cfg.rightName">{{cfg.rightName}}</cpTitle>
       <slot name="beforeTable"></slot>
       <el-form :inline="true" class="cp-form" label-width="6em" v-if="!cfg.hideSearchForm">
         <slot name="searchBegin"></slot>
@@ -52,7 +51,7 @@
         <el-table-column type="index" width="80" :label="locz('index')" />
         <template v-for="(x,i) in (cfg.tableList && cfg.tableList.filter(x=>x && !x.hidden) || [])">
           <el-table-column v-bind="colcfg(x,i)" :key="i" v-if="x.buttonList" :fixed="x.fixed==='false'? false : x.fixed || 'right'">
-            <template slot-scope="scope">
+            <template #default="scope">
               <template v-for="(y,j) in x.buttonList">
                 <el-button :size="y.size" :type="y.type|| 'text'" :key="j" @click="y.fn ? y.fn(scope.row,scope.$index) : void 0" v-bind="genAttr(y,scope)" v-if="!y.hidden || !(y.hidden && y.hidden(scope.row) )">
                   {{ typeof y.text === 'function' ? y.text(scope.row,scope.$index) : y.text }}
@@ -60,22 +59,22 @@
               </template>
             </template>
           </el-table-column>
-          <el-table-column v-bind="colcfg(x,i)" :key="i" v-else-if="x.viewImg">
-            <template slot-scope="scope">
+          <el-table-column v-bind="colcfg(x,i)" :key="i + '-elseif'" v-else-if="x.viewImg">
+            <template #default="scope">
               <el-image style="width: 60px; height: 60px" fit="contain" :src="scope.row[x.prop]" :preview-src-list="[scope.row[x.prop]]">
               </el-image>
             </template>
           </el-table-column>
-          <el-table-column v-bind="colcfg(x,i)" :key="i" v-else-if="x.transform || x.class || x.style || cfg.tableCellFallbackText ">
-            <template slot-scope="scope">
-              <span v-bind="genAttr(x,scope)" @click="x.fn ? x.fn(scope.row,scope.$index) : void 0">{{ fallbackText(x.transform ? x.transform(scope.row) : scope.row[x.prop]) }}</span>
+          <el-table-column v-bind="colcfg(x,i)" :key="i + '-elseif2'" v-else-if="x.transform || x.class || x.style || cfg.tableCellFallbackText ">
+            <template #default="scope">
+              <span v-bind="genAttr(x,scope)" :key="i" @click="x.fn ? x.fn(scope.row,scope.$index) : void 0">{{ fallbackText(x.transform ? x.transform(scope.row) : scope.row[x.prop]) }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-bind="colcfg(x,i)" :key="i" v-else />
+          <el-table-column v-bind="colcfg(x,i)" :key="i + '-else'" v-else />
         </template>
       </el-table>
       <div class="pager-container" v-if="!cfg.hidePagination">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryParams.pageNum" :page-sizes="pageList" :page-size="queryParams.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tableTotal">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryParams[pageKey.current]" :page-sizes="pageList" :page-size="queryParams[pageKey.size]" layout="total, sizes, prev, pager, next, jumper" :total="tableTotal">
         </el-pagination>
       </div>
     </div>
@@ -83,143 +82,200 @@
 </template>
 
 <script>
-import { genAttr ,locz , inputcfg , _ } from "../commonFn/commonFn.js";
+import { getCurrentInstance, ref, toRefs, onMounted, nextTick } from "vue";
+import { genAttr, locz, inputcfg, _ } from "../commonFn/commonFn.js";
 export default {
-  name: "rl-table",
+  name: "rp-table",
   props: ["cfg"],
-  data() {
-    return {
-      _,
-      loading: false,
-      // hidden: false,
-      searchDateArr: [],
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        ...this.cfg.queryParams
-      },
-      queryList: {},
-      tableData: this.cfg.tableData || [],
-      tableTotal: 0,
-      dialogVisible: false,
-      searchCfg: {
-        queryBtn: 2
-      },
-      currentPage: 1,
-      imageList: [],
-      pageList: this.cfg.pageSizes || [10, 50, 100, 150]
-    };
-  },
-  computed: {},
-  mounted() {
-    // Search Select List
-    this.searchCfg = this.cfg.searchCfg || this.searchCfg;
-    // dictList only available when $dictArr exit
-    if (this.$dictArr && this.cfg.searchList) {
-      const dictList = this.cfg.searchList
-            .map((x) => !(x.list instanceof Array) && x.list)
-            .filter((x) => x) ||
-        [];
-        
-      if (dictList.length) {
-        this.$dictArr(...dictList).then((res) => dictList.forEach((x, i) => this.$set(this.queryList, x, res[i])));
-      }
-    }
-    this.$nextTick(_ => {
-      const hasVal =
-        this.cfg.searchList &&
-        this.cfg.searchList.find(x => x && x.type === "input" && x.value);
-      if (hasVal) {
-        this.queryParams[hasVal.key] = hasVal.value;
-        this.getList();
-      } else {
-        this.getList("reset");
-      }
-      // fetchConditionFn
-      if ( this.cfg.fetchConditionFn ) {
-        this.cfg.fetchConditionFn().then((res)=>{
-          Object.entries(res).forEach(x=>this.$set(this.queryList, x[0], x[1]))          
-        }).catch(err=>{
-          console.log('err',err)
-        })
-      }
+  emits: ["getSelection"],
+  setup(props, ctx) {
+    const { cfg } = toRefs(props);
+    const globalProperties = getCurrentInstance().appContext.config
+      .globalProperties;
+    const { $RP_CFG = {} } = globalProperties;
+
+    const pageKey = ref(
+      Object.assign({}, $RP_CFG.pageAlias, cfg.value.pageAlias)
+    );
+
+    let loading = ref(false);
+    let dialogVisible = ref(false);
+    const searchDateArr = ref([]);
+    const queryList = ref({});
+    let tableTotal = ref(0);
+
+    const queryParams = ref(
+      Object.assign(
+        {
+          [pageKey.value.current]: 1,
+          [pageKey.value.size]: 10
+        },
+        cfg.value.queryParams
+      )
+    );
+
+    const searchCfg = ref(
+      Object.assign(
+        {
+          queryBtn: 2
+        },
+        cfg.value.searchCfg
+      )
+    );
+    const tableData = ref(cfg.value.tableData || []);
+    const pageList = ref(cfg.value.pageSizes || [10, 50, 100, 150]);
+    const imageList = ref([]);
+
+    onMounted(() => {
+      // dictList only available when $dictArr exit
+      // if (this.$dictArr && cfg.value.searchList) {
+      //   const dictList =
+      //     cfg.value.searchList
+      //       .map(x => !(x.list instanceof Array) && x.list)
+      //       .filter(x => x) || [];
+
+      //   if (dictList.length) {
+      //     this.$dictArr(...dictList).then(res =>
+      //       dictList.forEach((x, i) => this.$set(this.queryList, x, res[i]))
+      //     );
+      //   }
+      // }
+      nextTick(_ => {
+        const searchList = cfg.value.searchList || [];
+        const hasVal = searchList.find(x => x && x.type === "input" && x.value);
+        if (hasVal) {
+          queryParams.value[hasVal.key] = hasVal.value;
+          getList();
+        } else {
+          getList("reset");
+        }
+        // fetchConditionFn
+        if (cfg.value.fetchConditionFn) {
+          cfg.value
+            .fetchConditionFn()
+            .then(res => {
+              Object.entries(res).forEach(
+                x =>
+                  // this.$set(this.queryList, x[0], x[1])
+                  (queryList.value[x[0]] = x[1])
+              );
+            })
+            .catch(err => {
+              console.log("err", err);
+            });
+        }
+      });
     });
-  },
-  methods: {
-    genAttr,
-    locz,
-    inputcfg,
-    fallbackText(val){
-      if ( this.cfg.tableCellFallbackText && [null,undefined,''].includes( val)) {
-         return this.cfg.tableCellFallbackText
-      } else {
-        return val
-      }
-    },
-    getList(reset) {
+
+    const getList = reset => {
       // Search FN
-      if (this.cfg.searchFn) {
-        this.loading = true;
-        this.cfg
-          .searchFn(this.queryParams, reset)
+      if (cfg.value.searchFn) {
+        loading.value = true;
+        cfg.value
+          .searchFn(queryParams.value, reset)
           .then(res => {
-            if ( res ) {
-              this.tableData = res.list;
-              this.tableTotal = res.total;
+            if (res) {
+              tableData.value = res.list;
+              tableTotal.value = res.total * 1;
             }
           })
           .catch(e => {
             console.error(e);
           })
           .finally(f => {
-            this.loading = false;
+            loading.value = false;
           });
       }
-    },
-    colcfg: (x, i) => ({
-      label: x.label,
-      width: x.width,
-      minWidth: x.minWidth,
-      prop: x.prop,
-      align: x.align,
-      showOverflowTooltip: x.overflow,
-      fixed: x.fixed
-    }),
-    dateChange(arr, x) {
-      [this.queryParams[x.key1], this.queryParams[x.key2]] = arr || [];
-      if (this.queryParams[x.key2]) {
-        this.queryParams[x.key2] = this.queryParams[x.key2].replace(
+    };
+
+    const fallbackText = val => {
+      if (
+        cfg.value.tableCellFallbackText &&
+        [null, undefined, ""].includes(val)
+      ) {
+        return cfg.value.tableCellFallbackText;
+      } else {
+        return val;
+      }
+    };
+    const colcfg = (x, i) => {
+      const obj = {
+        label: x.label,
+        width: x.width,
+        minWidth: x.minWidth,
+        prop: x.prop,
+        align: x.align,
+        showOverflowTooltip: x.overflow,
+        fixed: x.fixed
+      };
+      return _.pickBy(obj, x => x);
+    };
+    const dateChange = (arr, x) => {
+      [queryParams.value[x.key1], queryParams.value[x.key2]] = arr || [];
+      if (queryParams.value[x.key2]) {
+        queryParams.value[x.key2] = queryParams.value[x.key2].replace(
           "00:00:00",
           "23:59:59"
         );
       }
-    },
-    handleSizeChange(size) {
-      this.queryParams.pageNum = 1;
-      this.queryParams.pageSize = size;
-      this.getList();
-    },
-    handleCurrentChange(page) {
-      this.queryParams.pageNum = page;
-      this.getList();
-    },
-    searchButton(){
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    resetQuery() {
-      if (this._pick) {
-        this.queryParams = this._pick(this.queryParams, ["pageSize"]);
+    };
+
+    // 分页函数
+    const handleSizeChange = size => {
+      queryParams.value[pageKey.value.current] = 1;
+      queryParams.value[pageKey.value.size] = size;
+      getList();
+    };
+    const handleCurrentChange = page => {
+      queryParams.value[pageKey.value.current] = page;
+      getList();
+    };
+
+    const searchButton = () => {
+      queryParams.value[pageKey.value.current] = 1;
+      getList();
+    };
+    const resetQuery = () => {
+      if (_.pick) {
+        queryParams.value = _.pick(queryParams.value, [pageKey.value.size]);
       } else {
-        this.queryParams = { pageSize: this.queryParams.pageSize };
+        queryParams.value = {
+          [pageKey.value.size]: queryParams.value[pageKey.value.size]
+        };
       }
-      this.queryParams.pageNum = 1;
-      this.searchDateArr = [];
-      this.getList("reset");
-    },
-    handleSelectionChange(val) {
-      this.$emit("getSelection", val);
-    }
+      queryParams.value[pageKey.value.current] = 1;
+      searchDateArr.value = [];
+      getList("reset");
+    };
+
+    const handleSelectionChange = val => {
+      $emit("getSelection", val);
+    };
+    return {
+      pageKey,
+      loading,
+      dialogVisible,
+      searchDateArr,
+      queryList,
+      tableData,
+      queryParams,
+      pageList,
+      tableTotal,
+      searchCfg,
+      colcfg,
+      fallbackText,
+
+      genAttr,
+      locz,
+      inputcfg,
+      getList,
+      dateChange,
+      handleSizeChange,
+      handleCurrentChange,
+      searchButton,
+      resetQuery,
+      handleSelectionChange
+    };
   }
 };
 </script>

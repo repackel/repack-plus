@@ -41,21 +41,7 @@ It was designed to be configurable from object data.
 npm i @repackel/repack-plus -D
 ```
 
-## 📜 Document
-
-- [FormItem](./FormItem/readme.md)
-- [Table](./Table/readme.md)
-
-> 中文文档
+## 📜 中文文档
 
 - [FormItem](./FormItem/readme.zh.md)
 - [Table](./Table/readme.zh.md)
-
-## 🔮 Live Demo
-
-- [CodeSandBox development Demo](https://codesandbox.io/s/github/repackel/repack-demo?file=/src/demo.vue)
-- [Demo source code](https://github.com/repackel/repack-demo/)
-
-## 🎈 Code Snippet
-- [Using code snippets in VS code](./codeSnippets/readme.md)
-- [在 VS code 中使用代码片段](./codeSnippets/readme.zh.md)

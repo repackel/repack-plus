@@ -1,8 +1,31 @@
 ## **Table** 表格文档
 
 ### 引入
+
+- 全局引入
 ```javascript
-import { Table } from "@repackel/repack";
+// 入口 main.js 
+import { createApp } from 'vue'
+import ElementPlus from 'element-plus';
+import RepackPlus from "@repackel/repack-plus";
+// 传入分页配置
+const rpcfg = {
+  pageAlias: {
+    current: "currentPage", //当前页码的键名
+    size: "pageSize" //每页大小的键名
+  }
+}
+// 全局安装
+const app = createApp(App).use(ElementPlus).use(RepackPlus,rpcfg)
+app.mount('#app')
+```
+```html
+<rp-table :cfg="cfg" ref="staffTable" @getSelection="getSelection"></rp-table>
+```
+
+- 组件内引入
+```javascript
+import { Table } from "@repackel/repack-plus";
 ```
 ```javascript
 components: {
@@ -10,9 +33,7 @@ components: {
 },
 ```
 ```html
-<rl-table :cfg="cfg" ref="staffTable" @getSelection="getSelection">
-  <!-- <template slot="searchbox">slot</template> -->
-</rl-table>
+<rp-table :cfg="cfg" ref="staffTable" @getSelection="getSelection"></rp-table>
 ```
 
 **插槽：*
@@ -29,8 +50,24 @@ components: {
 ### 配置
 
 - 1 `cfg` 配置
+
+> 最简配置
+
 ```javascript
 {
+  searchFn: this.getList,
+  tableList:[],
+}
+```
+
+> 完整配置
+
+```javascript
+{
+  pageAlias: {// 定义分页配置，全局安装时可通过 rpcfg.pageAlias 传入
+    current: "currentPage", //当前页码的键名
+    size: "pageSize" //每页大小的键名
+  },
   actionList:[], // 操作按钮列表，可选
   actionAlign: "right", // 操作按钮对齐，默认 `"right"`
   searchList:[], // 搜索列表
