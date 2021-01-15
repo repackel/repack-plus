@@ -29,7 +29,7 @@ If applicable, add screenshots to help explain your problem.
  - Version [e.g. 22] 
  - Resolution [e.g. 1920x1080]
  - vue version [e.g. 3.0.5]
- - element-ui version [e.g. 1.0.1]
+ - element-plus version [e.g. 1.0.1]
  - @repackel/repack version [e.g. 0.0.1]
 
 **Additional context**

@@ -47,7 +47,7 @@ list:[
 | class | content class Name | `String` | - | `'w300'` |
 | itemClassName | `<el-form-item>` class Name | `String` | - | `'pct50'` |
 | width | Width | `String` | - | `'150px'` |
-| labelWidth | Same as element-ui `label-width` | `String` | - | `'15em'` |
+| labelWidth | Same as element-plus `label-width` | `String` | - | `'15em'` |
 | range | I.e., min and max | `Array` | - | `[1,20]` |
 | overflow | When `type="view"` , show overflow text | `Boolean` | - | `true` |
 | transform | When `type="view"` , processing displayed text, pass in `form[x.key]` | `Function` | - | `str => str.substr(0,4)` |
@@ -56,7 +56,7 @@ list:[
 | checkAll | When `type="checkbox"` , show check all box | `Boolean` | `false` | `true` 
 | prependText | When `type="input"` , show prepend text | `String` | - | `"https://"` |
 | appendText | When `type="input"` , show append text | `String` | - | `"dollars per person"` |
-| - | Same as element-ui below ||||
+| - | Same as element-plus below ||||
 | size | - | `String` | `"small"` | `"small"` |
 | filterable | - | `Boolean` | - | `true` |
 | clearable | - | `Boolean` | `true` | `true` |

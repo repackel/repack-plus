@@ -152,7 +152,7 @@ searchList: [
 | width | item content width | `String` | - | `"220px"` |
 | class | item content class name | `String` | - | `"w250"` |
 | itemClassName | item class name | `String` | - | `"block"` |
-| - | Same as element-ui below ||||
+| - | Same as element-plus below ||||
 | size | - | `String` | `"small"` | `"small"` |
 | filterable | - | `Boolean` | - | `true` |
 | clearable | - | `Boolean` | `true` | `true` |
@@ -219,11 +219,11 @@ tableList: [
 | prop | Key of form loop | `String` | Mandatory |`"name"` |
 | hidden | Hide the column | `Boolean` | `false` |`true` |
 | viewImg | Take the prop field to display the picture | `Boolean` | | `true` |
-| width | Width, same as element-ui | `Number` | | `80`  |
-| minWidth | Minimum width, same as element-ui | `Number` | | `120`  |
-| align | List alignment, same as element-ui | `String` |  | `'right'`  |
-| overflow | showOverflowTooltip, same as element-ui | `Boolean` |  | `true` |
-| fixed | Fixed list, same as element-ui | `Boolean` `String` | `false` | `'right'`  |
+| width | Width, same as element-plus | `Number` | | `80`  |
+| minWidth | Minimum width, same as element-plus | `Number` | | `120`  |
+| align | List alignment, same as element-plus | `String` |  | `'right'`  |
+| overflow | showOverflowTooltip, same as element-plus | `Boolean` |  | `true` |
+| fixed | Fixed list, same as element-plus | `Boolean` `String` | `false` | `'right'`  |
 | transform | Functions for processing displayed text, pass in `row` return result | `Function` |  | `row => row.num + 'kg'` | 
 | class | Class name | `String` `Function` | | `row => ["", "green", "red"][row.state]`  |
 | style | Inline style | `String` `Function` | | `row => ({ color: ["", "green", "red"][row.state]})`  |
@@ -246,8 +246,8 @@ buttonList:[
 | Key | Value | Data Type | Default | Example |
 | --- | --- | --- |--- | --- |
 | icon | Button icon | `String` | | `"el-icon-edit"`  |
-| type | Button type, same as element-ui | `String` | `'text'` | `"primary"`  |
-| size | Button size, same as element-ui | `String` | `'default'` | `"mini"`  |
+| type | Button type, same as element-plus | `String` | `'text'` | `"primary"`  |
+| size | Button size, same as element-plus | `String` | `'default'` | `"mini"`  |
 | disabled | Disabled | `Boolean` `Function` | | `true`  |
 | class | Class name | `String` `Function` | | `row => ["", "green", "red"][row.state]`  |
 | style | Inline style | `String` `Function` | | `row => ({ color: ["", "green", "red"][row.state]})` |

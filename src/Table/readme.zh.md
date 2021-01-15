@@ -189,7 +189,7 @@ searchList: [
 | width | item content 宽度，单位为 px | `String` | - | `"220px"` |
 | class | item content 类名 | `String` | - | `"w250"` |
 | itemClassName | item 类名 | `String` | - | `"block"` |
-| - | 以下同 element-ui ||||
+| - | 以下同 element-plus ||||
 | size | - | `String` | `"small"` | `"small"` |
 | filterable | - | `Boolean` | - | `true` |
 | clearable | - | `Boolean` | `true` | `true` |
@@ -256,11 +256,11 @@ tableList: [
 | prop | 表单循环的 key | `String` | 必传 |`"name"` |
 | hidden | 隐藏该列 | `Boolean` | `false` |`true` |
 | viewImg | 取 prop 字段显示看图 | `Boolean` | | `true` |
-| width | 宽度 ，同 element-ui | `Number` | | `80`  |
-| minWidth | 最小宽度 ，同 element-ui | `Number` | | `120`  |
-| align | 列表对齐 ，同 element-ui | `String` |  | `'right'`  |
-| overflow | showOverflowTooltip ，同 element-ui | `Boolean` |  | `true` |
-| fixed | 列表固定 ，同 element-ui | `Boolean` `String` | `false` | `'right'`  |
+| width | 宽度 ，同 element-plus | `Number` | | `80`  |
+| minWidth | 最小宽度 ，同 element-plus | `Number` | | `120`  |
+| align | 列表对齐 ，同 element-plus | `String` |  | `'right'`  |
+| overflow | showOverflowTooltip ，同 element-plus | `Boolean` |  | `true` |
+| fixed | 列表固定 ，同 element-plus | `Boolean` `String` | `false` | `'right'`  |
 | transform | 处理显示文字的函数，传入`row` ，显示返回结果 | `Function` |  | `row => row.num + 'kg'` | 
 | class | 类名 | `String` `Function` | | `row => ["", "green", "red"][row.state]`  |
 | style | 内联样式 | `String` `Function` | | `row => ({ color: ["", "green", "red"][row.state]})`  |
@@ -283,8 +283,8 @@ buttonList:[
 | 键名 | 值 | 类型 | 默认值 | 示例 |
 | --- | --- | --- |--- | --- |
 | icon | 按钮图标 | `String` | | `"el-icon-edit"`  |
-| type | 按钮类型，同 element-ui | `String` | `'text'` | `"primary"`  |
-| size | 按钮大小，同 element-ui | `String` | `'default'` | `"mini"`  |
+| type | 按钮类型，同 element-plus | `String` | `'text'` | `"primary"`  |
+| size | 按钮大小，同 element-plus | `String` | `'default'` | `"mini"`  |
 | disabled | 禁用 | `Boolean` `Function` | | `true`  |
 | class | 类名 | `String` `Function` | | `row => ["", "green", "red"][row.state]`  |
 | style | 内联样式 | `String` `Function` | | `row => ({ color: ["", "green", "red"][row.state]})` |

@@ -47,7 +47,7 @@ list:[
 | class | content 类名 | `String` | - | `'w300'` |
 | itemClassName | `<el-form-item>` 类名 | `String` | - | `'pct50'` |
 | width | 宽度 | `String` | - | `'150px'` |
-| labelWidth | 同 element-ui `label-width` | `String` | - | `'15em'` |
+| labelWidth | 同 element-plus `label-width` | `String` | - | `'15em'` |
 | range | 即 min 和 max | `Array` | - | `[1,20]` |
 | overflow | 当 `type="view"` 时，显示溢出文本 | `Boolean` | - | `true` |
 | transform | 当 `type="view"` 时，处理显示文本，传入`form[x.key]` | `Function` | - | `str => str.substr(0,4)` |
@@ -56,7 +56,7 @@ list:[
 | checkAll | 当 `type="checkbox"` 时，显示全选框 | `Boolean` | `false` | `true` |
 | prependText | 当 `type="input"` 时，显示前置文本 | `String` | - | `"https://"` |
 | appendText | 当 `type="input"` 时，显示后置文本 | `String` | - | `"元/人"` |
-| - | 以下同 element-ui ||||
+| - | 以下同 element-plus ||||
 | size | - | `String` | `"small"` | `"small"` |
 | filterable | - | `Boolean` | - | `true` |
 | clearable | - | `Boolean` | `true` | `true` |
