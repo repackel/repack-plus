@@ -79,6 +79,7 @@ components: {
   tableCellFallbackText: '-', // 表格单元备用文本，可选。当表格的值为空时显示，对整个表格生效。无默认
   hideSearchForm: true, // 隐藏搜索条件和搜索按钮，默认显示
   hidePagination: true, // 隐藏分页组件，默认显示
+  paginationClassName: '', // el-pagination 分页器盒子的样式
 }
 ```
 

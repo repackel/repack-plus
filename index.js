@@ -1,4 +1,4 @@
-export const hello = 'hello world'
+export const hello = 'hello repackel'
 
 
 
@@ -12,20 +12,24 @@ export {
 }
 from './src/Paginated/index.vue'
 
-const cfg = {}
-
 
 import Table from './src/Table/index.vue'
 const componentsList = [
   Table
 ]
 
+
+
+
 const defaultInstallOpt = {
   pageAlias: {
     current: "current",
     size: "size"
-  }
+  },
+  hello
 }
+
+
 
 export default {
   install: (app, opt = {}) => {

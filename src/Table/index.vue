@@ -73,7 +73,7 @@
           <el-table-column v-bind="colcfg(x,i)" :key="i + '-else'" v-else />
         </template>
       </el-table>
-      <div class="pager-container" v-if="!cfg.hidePagination">
+      <div class="pager-container" :class="cfg.paginationClassName" v-if="!cfg.hidePagination">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryParams[pageKey.current]" :page-sizes="pageList" :page-size="queryParams[pageKey.size]" layout="total, sizes, prev, pager, next, jumper" :total="tableTotal">
         </el-pagination>
       </div>
